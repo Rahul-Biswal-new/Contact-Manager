@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { ContactService } from "../../../service/ContactService";
 
 export default function ContactList() {
+
+  const [state, setstate] = useState({
+      loading : false,
+      contact: [],
+      errorMessage: ''
+  });
+
+
+  useEffect( async () => {
+   
+      let response = await  ContactService.getAllContacts();
+      console.log(response.data);
+      setstate({
+        ...state, 
+        loading: false,
+        contacts: response.data
+      });      
+}, []);
+
+  let {loading, contacts, errorMessage} =state;
+  
   return (
     <>
+    <pre>{JSON.stringify(contacts)}</pre>
     <section className="contact-search p-3">
       <div className="container">
         <div className="grid">
